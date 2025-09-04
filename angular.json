@@ -74,6 +74,16 @@
           "options": {
             "buildTarget": "angular-conduit:build"
           }
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:web-test-runner",
+          "options": {
+            "polyfills": ["zone.js", "zone.js/testing"],
+            "tsConfig": "tsconfig.spec.json",
+            "assets": ["src/favicon.ico", "src/assets"],
+            "styles": ["src/styles.css"],
+            "scripts": []
+          }
         }
       }
     }
