@@ -1,20 +1,20 @@
 import { Component, DestroyRef, inject, OnInit } from "@angular/core";
 import { FormControl, FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { ActivatedRoute, Router, RouterLink } from "@angular/router";
-import { User } from "../../../../core/models/user.model";
+import { User } from "../../../../core/auth/user.model";
 import { Article } from "../../models/article.model";
 import { ArticlesService } from "../../services/articles.service";
 import { CommentsService } from "../../services/comments.service";
-import { UserService } from "../../../../core/services/user.service";
+import { UserService } from "../../../../core/auth/services/user.service";
 import { ArticleMetaComponent } from "../../components/article-meta.component";
-import { AsyncPipe, NgClass, NgForOf, NgIf } from "@angular/common";
+import { AsyncPipe, NgClass } from "@angular/common";
 import { MarkdownPipe } from "../../../../shared/pipes/markdown.pipe";
 import { ListErrorsComponent } from "../../../../shared/components/list-errors.component";
 import { ArticleCommentComponent } from "../../components/article-comment.component";
 import { catchError } from "rxjs/operators";
 import { combineLatest, throwError } from "rxjs";
 import { Comment } from "../../models/comment.model";
-import { IfAuthenticatedDirective } from "../../../../shared/directives/if-authenticated.directive";
+import { IfAuthenticatedDirective } from "../../../../core/auth/if-authenticated.directive";
 import { Errors } from "../../../../core/models/errors.model";
 import { Profile } from "../../../profile/models/profile.model";
 import { takeUntilDestroyed } from "@angular/core/rxjs-interop";
@@ -30,7 +30,6 @@ import { FollowButtonComponent } from "../../../profile/components/follow-button
     NgClass,
     FollowButtonComponent,
     FavoriteButtonComponent,
-    NgForOf,
     MarkdownPipe,
     AsyncPipe,
     ListErrorsComponent,
@@ -38,9 +37,7 @@ import { FollowButtonComponent } from "../../../profile/components/follow-button
     ArticleCommentComponent,
     ReactiveFormsModule,
     IfAuthenticatedDirective,
-    NgIf,
   ],
-  standalone: true,
 })
 export default class ArticleComponent implements OnInit {
   article!: Article;

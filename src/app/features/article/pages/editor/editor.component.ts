@@ -1,4 +1,3 @@
-import { NgForOf } from "@angular/common";
 import { Component, DestroyRef, inject, OnInit } from "@angular/core";
 import {
   FormControl,
@@ -10,7 +9,7 @@ import { ActivatedRoute, Router } from "@angular/router";
 import { combineLatest } from "rxjs";
 import { Errors } from "../../../../core/models/errors.model";
 import { ArticlesService } from "../../services/articles.service";
-import { UserService } from "../../../../core/services/user.service";
+import { UserService } from "../../../../core/auth/services/user.service";
 import { ListErrorsComponent } from "../../../../shared/components/list-errors.component";
 import { takeUntilDestroyed } from "@angular/core/rxjs-interop";
 
@@ -23,8 +22,7 @@ interface ArticleForm {
 @Component({
   selector: "app-editor-page",
   templateUrl: "./editor.component.html",
-  imports: [ListErrorsComponent, ReactiveFormsModule, NgForOf],
-  standalone: true,
+  imports: [ListErrorsComponent, ReactiveFormsModule],
 })
 export default class EditorComponent implements OnInit {
   tagList: string[] = [];
@@ -81,23 +79,25 @@ export default class EditorComponent implements OnInit {
 
   submitForm(): void {
     this.isSubmitting = true;
-
     // update any single tag
     this.addTag();
 
-    // post the changes
-    this.articleService
-      .create({
-        ...this.articleForm.value,
-        tagList: this.tagList,
-      })
-      .pipe(takeUntilDestroyed(this.destroyRef))
-      .subscribe({
-        next: (article) => this.router.navigate(["/article/", article.slug]),
-        error: (err) => {
-          this.errors = err;
-          this.isSubmitting = false;
-        },
-      });
+    const slug = this.route.snapshot.params["slug"];
+    const articleData = {
+      ...this.articleForm.value,
+      tagList: this.tagList,
+    };
+
+    const observable = slug
+      ? this.articleService.update({ ...articleData, slug })
+      : this.articleService.create(articleData);
+
+    observable.pipe(takeUntilDestroyed(this.destroyRef)).subscribe({
+      next: (article) => this.router.navigate(["/article/", article.slug]),
+      error: (err) => {
+        this.errors = err;
+        this.isSubmitting = false;
+      },
+    });
   }
 }

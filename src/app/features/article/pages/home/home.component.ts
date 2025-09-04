@@ -2,27 +2,19 @@ import { Component, DestroyRef, inject, OnInit } from "@angular/core";
 import { Router } from "@angular/router";
 import { TagsService } from "../../services/tags.service";
 import { ArticleListConfig } from "../../models/article-list-config.model";
-import { AsyncPipe, NgClass, NgForOf } from "@angular/common";
+import { NgClass } from "@angular/common";
 import { ArticleListComponent } from "../../components/article-list.component";
 import { tap } from "rxjs/operators";
-import { UserService } from "../../../../core/services/user.service";
+import { UserService } from "../../../../core/auth/services/user.service";
 import { RxLet } from "@rx-angular/template/let";
-import { IfAuthenticatedDirective } from "../../../../shared/directives/if-authenticated.directive";
+import { IfAuthenticatedDirective } from "../../../../core/auth/if-authenticated.directive";
 import { takeUntilDestroyed } from "@angular/core/rxjs-interop";
 
 @Component({
   selector: "app-home-page",
   templateUrl: "./home.component.html",
   styleUrls: ["./home.component.css"],
-  imports: [
-    NgClass,
-    ArticleListComponent,
-    AsyncPipe,
-    RxLet,
-    NgForOf,
-    IfAuthenticatedDirective,
-  ],
-  standalone: true,
+  imports: [NgClass, ArticleListComponent, RxLet, IfAuthenticatedDirective],
 })
 export default class HomeComponent implements OnInit {
   isAuthenticated = false;

@@ -1,10 +1,10 @@
 import { Component, EventEmitter, Input, Output, inject } from "@angular/core";
-import { UserService } from "../../../core/services/user.service";
-import { User } from "../../../core/models/user.model";
+import { UserService } from "../../../core/auth/services/user.service";
+import { User } from "../../../core/auth/user.model";
 import { RouterLink } from "@angular/router";
 import { map } from "rxjs/operators";
 import { Comment } from "../models/comment.model";
-import { AsyncPipe, DatePipe, NgIf } from "@angular/common";
+import { AsyncPipe, DatePipe } from "@angular/common";
 
 @Component({
   selector: "app-article-comment",
@@ -42,8 +42,7 @@ import { AsyncPipe, DatePipe, NgIf } from "@angular/common";
       </div>
     }
   `,
-  imports: [RouterLink, DatePipe, NgIf, AsyncPipe],
-  standalone: true,
+  imports: [RouterLink, DatePipe, AsyncPipe],
 })
 export class ArticleCommentComponent {
   @Input() comment!: Comment;
